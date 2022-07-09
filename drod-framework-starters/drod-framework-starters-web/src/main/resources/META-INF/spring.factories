@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    org.drod.cloud.web.ExceptionAdviceConfiguration,\
+    org.drod.framework.web.InterceptorAutoConfiguration

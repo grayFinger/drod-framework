@@ -1,0 +1,89 @@
+server:
+  servlet:
+    application-display-name: ${spring.application.name}
+    context-path: /
+
+e9:
+  framework:
+    version: 20220615
+
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  config:
+    location: classpath:/override.yml
+  main:
+    allow-bean-definition-overriding: true
+  cloud:
+    consul:
+      config:
+        watch:
+          enabled: false
+      discovery:
+        prefer-ip-address: true
+        instanceId: ${spring.application.name}-${spring.cloud.client.ip-address}-${server.port}
+        health-check-path: /health
+    loadbalancer:
+      cache:
+        enabled: true
+        caffeine:
+          spec: initialCapacity=500,expireAfterWrite=5s
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSSZ
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: false
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    call-setters-on-nulls: true
+  global-config:
+    banner: false
+    db-config:
+      id-type: AUTO
+      select-strategy: NOT_EMPTY
+      insert-strategy: NOT_EMPTY
+      update-strategy: NOT_EMPTY
+  mapper-locations: classpath*:mapper/**/*.xml
+
+feign:
+  okhttp:
+    enabled: true # 开启OKHTTP支持，默认HttpClient
+  httpclient:
+    max-connections-per-route: 100
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 2048
+    response:
+      enabled: true
+  sentinel:
+    enabled: true
+  client:
+    config:
+      default:
+        connect-timeout: 4000
+        read-timeout: 10000
+
+##健康检查关联检查。
+#management.endpoints.web.exposure.include:
+#  - health     # 健康检查
+#  - env        # 环境变量
+#  - metrics    # 项目度量
+#  - refresh    # 刷新配置
+#  - loggers    # 日志级别
+#  - info       # 基本信息
+management:
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: health,env,metrics,loggers,info,prometheus,logfile,heapdump,jolokia
+  endpoint:
+    health:
+      show-details: always

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+    <property name="LOG_FILE" value="${BUILD_FOLDER:-logs}"/>
+    <property name="MAX_HISTORY" value="7"/>
+    <property name="MAX_ELK_HISTORY" value="2"/>
+    <property name="LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n"/>
+
+    <appender name="biz" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}/biz.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${MAX_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="elk" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}/elk.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${MAX_ELK_HISTORY}</maxHistory>
+        </rollingPolicy>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>
+                        {
+                        "timestamp": "%d{yyyy-MM-dd HH:mm:ss.SSS}",
+                        "app": "%X{app:-}",
+                        "enterpriseId": "%X{enterpriseId:-}",
+                        "userId": "%X{userId:-}",
+                        "ip": "%X{ip:-}",
+                        "traceId": "%X{traceId:-}",
+                        "level": "%level",
+                        "thread": "%thread",
+                        "class": "%logger{20}",
+                        "message": "%message",
+                        "stack_trace": "%exception{10}"
+                        }
+                    </pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="biz"/>
+        <appender-ref ref="elk"/>
+    </root>
+
+</configuration>

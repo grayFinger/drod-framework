@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>drod-framework-parent</artifactId>
+        <groupId>org.drod.cloud</groupId>
+        <version>20220627</version>
+    </parent>
+    <artifactId>drod-framework-starters</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>drod-framework-starters-basic</module>
+        <module>drod-framework-starters-consul</module>
+        <module>drod-framework-starters-job</module>
+        <module>drod-framework-starters-gateway</module>
+        <module>drod-framework-starters-lettuce</module>
+        <module>drod-framework-starters-mybatis</module>
+        <module>drod-framework-starters-rocketmq</module>
+        <module>drod-framework-starters-sms</module>
+        <module>drod-framework-starters-web</module>
+        <module>drod-framework-starters-email</module>
+    </modules>
+
+</project>
